@@ -7,15 +7,18 @@ before_install:
 - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 script:
-- docker build -t lestex/docker-centos7-ansible .
+- docker build -t docker-centos7-ansible .
 
 # Test running the container.
-- docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro lestex/docker-centos7-ansible /usr/lib/systemd/systemd
+- docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro docker-centos7-ansible /usr/lib/systemd/systemd
 - echo $DOCKERHUB_USERNAME
 - echo $DOCKERHUB_PASSWORD
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD";
-    docker push lestex/docker-centos7-ansible;
-    fi
+  - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+  - export REPO=$DOCKERHUB_USERNAME/docker-centos7-ansible
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
