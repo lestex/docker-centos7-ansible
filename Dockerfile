@@ -17,9 +17,12 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 RUN yum makecache fast \
  && yum -y install deltarpm epel-release initscripts \
  && yum -y update \
- && yum -y install ansible which \
+ && yum -y install ansible which pip2 \
  && yum clean all
- 
+
+# Install ansible lint
+RUN pip2 install ansible-lint
+
 # adds ansible inventory file.
 RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
 
