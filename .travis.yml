@@ -17,7 +17,12 @@ after_success:
 # Pushing the container to docker hub
   - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
   - export REPO=$DOCKERHUB_USERNAME/docker-centos7-ansible
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -t $REPO .
-  - docker tag $REPO $REPO:$TAG
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then 
+    docker build -t $REPO:latest .; 
+    else 
+    docker build -t $REPO:$TRAVIS_BRANCH .; 
+    fi
+  - if [ -z "$TRAVIS_TAG" ]; then 
+    docker build -t $REPO:$TRAVIS_TAG .;
+    fi
   - docker push $REPO
