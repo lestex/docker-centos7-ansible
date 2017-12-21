@@ -3,11 +3,11 @@ services:
   - docker
 
 before_install:
-  - sudo apt-get update -y
-  - sudo apt-get -y install docker-ce
+- sudo apt-get update -y
+- sudo apt-get -y install docker-ce
 
 script:
-  - docker build -t docker-centos7-ansible .
+- docker build -t docker-centos7-ansible .
 
-  # Test running the container.
-  - docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro docker-centos7-ansible /usr/lib/systemd/systemd
+# Test running the container.
+- docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro docker-centos7-ansible /usr/lib/systemd/systemd
