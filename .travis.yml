@@ -2,21 +2,23 @@
 services:
   - docker
 
+env:
+  - REPO=$DOCKERHUB_USERNAME/docker-centos7-ansible
+  
 before_install:
 - sudo apt-get update -y
 - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 script:
 # Building the container.
-- docker build -t $DOCKERHUB_USERNAME/docker-centos7-ansible .
+- docker build -t $REPO .
 
 # Test running the container.
-- docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro $DOCKERHUB_USERNAME/docker-centos7-ansible /usr/lib/systemd/systemd
+- docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro $REPO /usr/lib/systemd/systemd
 
 after_success:
 # Pushing the container to docker hub
   - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
-  - export REPO=$DOCKERHUB_USERNAME/docker-centos7-ansible
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
     docker tag $REPO $REPO:latest; 
     else 
@@ -27,4 +29,5 @@ after_success:
     else
     docker build -t $REPO:$TRAVIS_TAG .;
     fi
+  - docker images
   - docker push $REPO
