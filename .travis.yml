@@ -4,11 +4,17 @@ services:
 
 before_install:
 - sudo apt-get update -y
-- sudo apt-get -y install docker-ce
+- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 script:
-- docker build -t docker-centos7-ansible .
+- docker build -t lestex/docker-centos7-ansible .
 
 # Test running the container.
 - docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro docker-centos7-ansible /usr/lib/systemd/systemd
 - docker images
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD";
+    docker push lestex/docker-centos7-ansible;
+    fi
