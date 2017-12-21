@@ -16,6 +16,7 @@ script:
 # Test running the container.
 - docker run --name container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro $REPO /usr/lib/systemd/systemd
 - docker exec -it container which ansible
+- docker exec -it container which ansible-lint
 
 after_success:
 # Pushing the container to docker hub
