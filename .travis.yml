@@ -21,10 +21,7 @@ after_success:
   - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
     docker tag $REPO $REPO:latest; 
-    else 
-    docker tag $REPO $REPO:$TRAVIS_BRANCH .; 
-    fi
-  - if ! [ -z "$TRAVIS_TAG" ]; then
+    elif ! [ -z "$TRAVIS_TAG" ]; then
     docker build -t $REPO:$TRAVIS_TAG .;
     fi
   - docker images
