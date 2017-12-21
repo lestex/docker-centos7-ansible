@@ -21,10 +21,6 @@ after_success:
 # Pushing the container to docker hub
   - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
-    docker tag $REPO $REPO:latest; 
-    elif ! [ -z "$TRAVIS_TAG" ]; then
-    docker build -t $REPO:$TRAVIS_TAG .;
+    docker tag $REPO $REPO:latest;
     fi
   - docker push $REPO
-  - docker rm -f `(docker ps -aq)`
-  - docker rmi `(docker images -q)`
