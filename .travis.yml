@@ -24,5 +24,5 @@ after_success:
     elif ! [ -z "$TRAVIS_TAG" ]; then
     docker build -t $REPO:$TRAVIS_TAG .;
     fi
-  - docker images
   - docker push $REPO
+  - docker rmi `(docker images -q)`
