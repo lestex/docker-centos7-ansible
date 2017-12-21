@@ -24,9 +24,7 @@ after_success:
     else 
     docker tag $REPO $REPO:$TRAVIS_BRANCH .; 
     fi
-  - if [ -z "$TRAVIS_TAG" ]; then
-    echo "TRAVIS_TAG is unset";
-    else
+  - if ! [ -z "$TRAVIS_TAG" ]; then
     docker build -t $REPO:$TRAVIS_TAG .;
     fi
   - docker images
