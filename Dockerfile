@@ -19,6 +19,9 @@ RUN yum makecache fast \
  && yum -y update \
  && yum -y install ansible which \
  && yum clean all
+ 
+# adds ansible inventory file.
+RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
 
 VOLUME ["/sys/fs/cgroup"]
 CMD ["/usr/sbin/init"]
