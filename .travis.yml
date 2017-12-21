@@ -25,4 +25,5 @@ after_success:
     docker build -t $REPO:$TRAVIS_TAG .;
     fi
   - docker push $REPO
+  - docker rm -f `(docker ps -aq)`
   - docker rmi `(docker images -q)`
