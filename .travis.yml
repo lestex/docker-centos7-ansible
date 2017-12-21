@@ -11,3 +11,4 @@ script:
 
 # Test running the container.
 - docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro docker-centos7-ansible /usr/lib/systemd/systemd
+- docker images
