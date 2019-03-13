@@ -21,7 +21,9 @@ script:
 after_success:
 # Pushing the container to docker hub
   - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then 
-    docker tag $REPO $REPO:latest;
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker tag $REPO $REPO:TRAVIS_COMMIT
+    docker tag $REPO $REPO:latest
     fi
-  - docker push $REPO
+  - docker push $REPO:TRAVIS_COMMIT
+  - docker push $REPO:latest
