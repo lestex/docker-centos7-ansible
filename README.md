@@ -25,4 +25,4 @@ docker exec -it test ansible-lint /path/to/ansible/playbook.yml
 
 ### Author
 
-Created by Andrey Larin.
+Created by [Andrey Larin]()
