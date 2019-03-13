@@ -14,7 +14,7 @@
   2. Pull this image from Docker Hub: `docker pull lestex/docker-centos7-ansible`. Use the `latest` tag.
   3. Run a container from the image: 
   ```
-  docker run -p --name test --privileged -v=/sys/fs/cgroup:/sys/fs/cgroup:ro lestex/docker-centos7-ansible /lib/systemd/systemd
+  docker run -d --name test --privileged -v=/sys/fs/cgroup:/sys/fs/cgroup:ro lestex/docker-centos7-ansible /lib/systemd/systemd
 ```
   4. Use Ansible inside the container:
   
